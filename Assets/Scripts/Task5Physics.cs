@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using TMPro;
 
 public class Task5Physics : MonoBehaviour
@@ -78,6 +78,9 @@ public class Task5Physics : MonoBehaviour
     private float x0_3, y0_3, z0_3;
     private float ax3, ay3, az3;
 
+    // Накопленный путь для Task3
+    private float accumulatedDistance3;
+
     void Start()
     {
         baseBallPosition = ball.position;
@@ -125,6 +128,7 @@ public class Task5Physics : MonoBehaviour
         currentTime = 0f;
         currentTask = 0;
         ball.position = baseBallPosition;
+        accumulatedDistance3 = 0f;
 
         if (outputTime1 != null) outputTime1.text = "0.00";
         if (outputDistance1 != null) outputDistance1.text = "0.00";
@@ -210,6 +214,7 @@ public class Task5Physics : MonoBehaviour
 
             currentTask = 3;
             currentTime = 0f;
+            accumulatedDistance3 = 0f;
 
             ball.position = baseBallPosition + new Vector3(
                 x0_3 * scaleFactor,
@@ -277,12 +282,9 @@ public class Task5Physics : MonoBehaviour
         float vy = vy0_3 + ay3 * currentTime;
         float vz = vz0_3 + az3 * currentTime;
 
-        float dx = x - x0_3;
-        float dy = y - y0_3;
-        float dz = z - z0_3;
-
-        float s = Mathf.Sqrt(dx * dx + dy * dy + dz * dz);
         float v = Mathf.Sqrt(vx * vx + vy * vy + vz * vz);
+
+        accumulatedDistance3 += v * Time.deltaTime;
 
         ball.position = baseBallPosition + new Vector3(
             x * scaleFactor,
@@ -291,7 +293,7 @@ public class Task5Physics : MonoBehaviour
         );
 
         if (outputTime3 != null) outputTime3.text = currentTime.ToString("F2");
-        if (outputDistance3 != null) outputDistance3.text = s.ToString("F2");
+        if (outputDistance3 != null) outputDistance3.text = accumulatedDistance3.ToString("F2");
         if (outputSpeed3 != null) outputSpeed3.text = v.ToString("F2");
         if (outputX3 != null) outputX3.text = x.ToString("F2");
         if (outputY3 != null) outputY3.text = y.ToString("F2");
