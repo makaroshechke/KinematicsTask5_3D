@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using TMPro;
 
 public class Task4Physics3D : MonoBehaviour
@@ -62,6 +62,9 @@ public class Task4Physics3D : MonoBehaviour
 
     // Task3
     private float x0_3, y0_3, vx0_3, vy0_3, ax3, ay3;
+
+    // Накопленный путь для Task3
+    private float accumulatedDistance3;
 
     void Start()
     {
@@ -135,6 +138,7 @@ public class Task4Physics3D : MonoBehaviour
 
                 currentTask = 3;
                 currentTime = 0f;
+                accumulatedDistance3 = 0f;
                 ball.position = new Vector3(
                     baseBallPosition.x + x0_3 * scaleFactor,
                     baseBallPosition.y,
@@ -157,6 +161,7 @@ public class Task4Physics3D : MonoBehaviour
         currentTime = 0f;
         currentTask = 0;
         ball.position = baseBallPosition;
+        accumulatedDistance3 = 0f;
 
         if (outputTime1 != null) outputTime1.text = "0.00";
         if (outputDistance1 != null) outputDistance1.text = "0.00";
@@ -179,6 +184,7 @@ public class Task4Physics3D : MonoBehaviour
     {
         float x = vx1 * currentTime;
         float y = vy1 * currentTime;
+
         float s = Mathf.Sqrt(x * x + y * y);
 
         ball.position = new Vector3(
@@ -200,6 +206,7 @@ public class Task4Physics3D : MonoBehaviour
 
         float dx = vx2 * currentTime;
         float dy = vy2 * currentTime;
+
         float s = Mathf.Sqrt(dx * dx + dy * dy);
 
         ball.position = new Vector3(
@@ -222,11 +229,9 @@ public class Task4Physics3D : MonoBehaviour
         float vx = vx0_3 + ax3 * currentTime;
         float vy = vy0_3 + ay3 * currentTime;
 
-        float dx = x - x0_3;
-        float dy = y - y0_3;
-        float s = Mathf.Sqrt(dx * dx + dy * dy);
-
         float v = Mathf.Sqrt(vx * vx + vy * vy);
+
+        accumulatedDistance3 += v * Time.deltaTime;
 
         ball.position = new Vector3(
             baseBallPosition.x + x * scaleFactor,
@@ -235,7 +240,7 @@ public class Task4Physics3D : MonoBehaviour
         );
 
         if (outputTime3 != null) outputTime3.text = currentTime.ToString("F2");
-        if (outputDistance3 != null) outputDistance3.text = s.ToString("F2");
+        if (outputDistance3 != null) outputDistance3.text = accumulatedDistance3.ToString("F2");
         if (outputCoordX3 != null) outputCoordX3.text = x.ToString("F2");
         if (outputCoordY3 != null) outputCoordY3.text = y.ToString("F2");
         if (outputSpeed3 != null) outputSpeed3.text = v.ToString("F2");
